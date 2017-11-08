@@ -6,20 +6,41 @@ import 'rxjs/add/operator/toPromise';
 @Component({
     selector: 'app-images',
     template: `
-        <h2>Images</h2>
-        <ul>
-            <li *ngFor="let image of images">
-                {{ image.name }}<br />
-                {{ image.registry }}
-            </li>
-        </ul>
+        <div class="image-search">
+            <p-autoComplete [(ngModel)]="image" [suggestions]="filteredImages" (completeMethod)="filterImages($event)"
+                            field="Name" [size]="60" placeholder="Search Images" [minLength]="1"></p-autoComplete>
+        </div>
+        <div class="image-results">
+            <h3>{{ images.length }} image(s) found</h3>
+            <p-dataGrid [value]="images">
+                <ng-template let-image pTemplate="item">
+                    <div class="ui-g-12 ui-md-3">
+                        <p-panel [header]="image.Name" [style]="{'text-align':'center'}">
+                            {{ image.Registry }}
+                        </p-panel>
+                    </div>
+                </ng-template>
+            </p-dataGrid>
+        </div>
     `,
     styles: [`
-        background: #fff;
+        .image-search {
+            text-align: center;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        ::ng-deep .image-search .ui-inputtext {
+            font-size: 1.5em !important;
+        }
+        .image-results h3 {
+            text-align: center;
+        }
     `]
 })
 export class ImagesComponent implements OnInit {
-    images: any[];
+    images: any[] = [];
+    image: any;
+    filteredImages: any[];
 
     constructor(
         private http: Http
@@ -35,6 +56,19 @@ export class ImagesComponent implements OnInit {
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
+    }
+
+    searchImages(query): any {
+        return this.http.get(`http://52.14.95.20:8080/images/search/${query}`)
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handleError);
+    }
+
+    filterImages(event): void {
+        this.searchImages(event.query).then(data => {
+            this.filteredImages = data;
+        });
     }
 
     ngOnInit() {
