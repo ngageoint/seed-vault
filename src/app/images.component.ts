@@ -15,13 +15,18 @@ import 'rxjs/add/operator/toPromise';
             <p-dataGrid [value]="images">
                 <ng-template let-image pTemplate="item">
                     <div class="ui-g-12 ui-md-3">
-                        <p-panel [header]="image.Name" [style]="{'text-align':'center'}">
-                            {{ image.Registry }}
-                        </p-panel>
+                        <a (click)="showManifest(image)">
+                            <p-panel [header]="image.Name" [style]="{'text-align':'center'}">
+                                {{ image.Registry }}
+                            </p-panel>
+                        </a>
                     </div>
                 </ng-template>
             </p-dataGrid>
         </div>
+        <p-dialog *ngIf="currImage" [header]="currImage.Name" [(visible)]="showDialog" (onHide)="hideManifest()" [dismissableMask]="true">
+            {{ currImage.Manifest }}
+        </p-dialog>
     `,
     styles: [`
         .image-search {
@@ -35,12 +40,18 @@ import 'rxjs/add/operator/toPromise';
         .image-results h3 {
             text-align: center;
         }
+        ::ng-deep .image-results .ui-panel:hover {
+            background: red;
+            transition: background-color 1s;
+        }
     `]
 })
 export class ImagesComponent implements OnInit {
     images: any[] = [];
     image: any;
     filteredImages: any[];
+    showDialog: Boolean = false;
+    currImage: any;
 
     constructor(
         private http: Http
@@ -69,6 +80,15 @@ export class ImagesComponent implements OnInit {
         this.searchImages(event.query).then(data => {
             this.filteredImages = data;
         });
+    }
+
+    showManifest(image): void {
+        this.currImage = image;
+        this.showDialog = true;
+    }
+
+    hideManifest(): void {
+        this.currImage = null;
     }
 
     ngOnInit() {

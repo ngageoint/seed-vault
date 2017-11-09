@@ -7,7 +7,8 @@ import { NgModule } from '@angular/core';
 import {
     DataGridModule,
     PanelModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    DialogModule
 } from 'primeng/primeng';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -29,7 +30,8 @@ import { ImagesComponent } from './images.component';
         ReactiveFormsModule,
         DataGridModule,
         PanelModule,
-        AutoCompleteModule
+        AutoCompleteModule,
+        DialogModule
     ],
     providers: [
         StateService
