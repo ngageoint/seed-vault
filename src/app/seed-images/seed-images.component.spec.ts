@@ -1,18 +1,18 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpModule } from '@angular/http';
 
-import { ImagesComponent } from './images.component';
+import { SeedImagesComponent } from './seed-images.component';
 
 
-describe('ImagesComponent', () => {
+describe('SeedImagesComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpModule],
-            providers: [ImagesComponent]
+            providers: [SeedImagesComponent]
         });
     });
 
-    it('should be created', inject([ImagesComponent], (service: ImagesComponent) => {
+    it('should be created', inject([SeedImagesComponent], (service: SeedImagesComponent) => {
         expect(service).toBeTruthy();
     }));
 });
