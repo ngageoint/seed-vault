@@ -7,8 +7,7 @@ import {
     AutoCompleteModule,
     DataGridModule,
     DialogModule,
-    PanelModule,
-    ProgressBarModule
+    PanelModule
 } from 'primeng/primeng';
 
 @NgModule({
@@ -19,8 +18,7 @@ import {
         AutoCompleteModule,
         DataGridModule,
         DialogModule,
-        PanelModule,
-        ProgressBarModule
+        PanelModule
     ],
     declarations: [SeedImagesComponent],
     exports: [SeedImagesComponent]
