@@ -8,7 +8,7 @@ import 'rxjs/add/operator/toPromise';
     template: `
         <div class="seed-images">
             <div class="search">
-                <p-autoComplete [(ngModel)]="image" (completeMethod)="filterImages($event)" field="Name" [size]="60"
+                <p-autoComplete [(ngModel)]="image" (completeMethod)="filterImages($event)" field="Name" styleClass="search-input"
                                 placeholder="Search Images" [minLength]="0"></p-autoComplete>
                 <div class="loader" *ngIf="loading">
                     <svg version="1.1" id="loader" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -61,10 +61,16 @@ import 'rxjs/add/operator/toPromise';
             width: 50%;
             margin: 0 auto 15px auto;
         }
+        ::ng-deep .seed-images .search-input {
+            width: 100%;
+        }
+        ::ng-deep .seed-images .ui-autocomplete-input {
+            width: 100%;
+        }
         .seed-images .search .loader {
             position: absolute;
             top: 7px;
-            right: -20px;
+            right: 20px;
         }
         .seed-images .search .loader svg path, .seed-images .search .loader svg rect {
             fill: #FF6700;
