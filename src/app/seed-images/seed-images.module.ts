@@ -5,8 +5,10 @@ import { SeedImagesComponent } from './seed-images.component';
 
 import {
     AutoCompleteModule,
+    ButtonModule,
     DataGridModule,
     DialogModule,
+    GrowlModule,
     PanelModule
 } from 'primeng/primeng';
 
@@ -16,8 +18,10 @@ import {
         FormsModule,
         // prime-ng
         AutoCompleteModule,
+        ButtonModule,
         DataGridModule,
         DialogModule,
+        GrowlModule,
         PanelModule
     ],
     declarations: [SeedImagesComponent],

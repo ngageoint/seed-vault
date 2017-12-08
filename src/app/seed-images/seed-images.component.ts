@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
+import { Message } from 'primeng/primeng';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -33,7 +34,7 @@ import 'rxjs/add/operator/toPromise';
                 <p-dataGrid [value]="images">
                     <ng-template let-image pTemplate="item">
                         <div class="ui-g-12 ui-md-3">
-                            <a (click)="showManifest(image)">
+                            <a (click)="showImageDetails(image)">
                                 <p-panel [header]="image.Name" [style]="{'text-align':'center'}">
                                     {{ image.Org }}<br />
                                     {{ image.Registry }}
@@ -42,11 +43,17 @@ import 'rxjs/add/operator/toPromise';
                         </div>
                     </ng-template>
                 </p-dataGrid>
-                <p-dialog *ngIf="currImage" [header]="currImage.Name" [(visible)]="showDialog" (onHide)="hideManifest()" [responsive]="true"
-                          [dismissableMask]="true" [modal]="true" positionTop="40">
-                    {{ currImage.Manifest }}
+                <p-dialog *ngIf="currImage" [header]="currImage.Name" [(visible)]="showDialog" (onHide)="hideImageDetails()"
+                          [responsive]="true" [dismissableMask]="true" [modal]="true" positionTop="40" class="image-details">
+                    <h2>{{ currImage.Title }} v{{ currImage.JobVersion }}</h2>
+                    {{ currImage.Description }}
+                    <p-footer>
+                        <button pButton type="button" (click)="onExportClick()" label="Export" [icon]="exportIcon"
+                                iconPos="right"></button>
+                    </p-footer>
                 </p-dialog>
             </div>
+            <p-growl [(value)]="msgs"></p-growl>
         </div>
     `,
     styles: [`
@@ -76,12 +83,15 @@ import 'rxjs/add/operator/toPromise';
             text-align: center;
             margin: 18px 0;
         }
+        .seed-images .image-details h2 {
+            font-size: 1.2em;
+        }
         ::ng-deep .seed-images .results .ui-panel:hover {
             background: #48ACFF;
             transition: background-color 0.5s;
         }
         ::ng-deep .seed-images .results .ui-dialog {
-            width: 75% !important;
+            width: 35% !important;
         }
     `]
 })
@@ -92,6 +102,8 @@ export class SeedImagesComponent implements OnInit {
     loading: boolean;
     showDialog: Boolean = false;
     currImage: any;
+    exportIcon = 'fa-cloud-upload';
+    msgs: Message[] = [];
 
     constructor(
         private http: Http
@@ -99,6 +111,7 @@ export class SeedImagesComponent implements OnInit {
 
     private handleError(error: any): Promise<any> {
         console.error('An error occurred', error); // for demo purposes only
+        this.exportIcon = 'fa-cloud-upload';
         this.loading = false;
         return Promise.reject(error.message || error);
     }
@@ -125,6 +138,17 @@ export class SeedImagesComponent implements OnInit {
             .catch(this.handleError);
     }
 
+    getImageManifest(id): any {
+        this.exportIcon = 'fa-spinner fa-spin';
+        return this.http.get(`${this.url}/images/${id}/manifest`)
+            .toPromise()
+            .then(response => {
+                this.exportIcon = 'fa-cloud-upload';
+                return response.json();
+            })
+            .catch(this.handleError);
+    }
+
     filterImages(event): void {
         if (event.query) {
             this.searchImages(event.query).then(data => {
@@ -137,14 +161,26 @@ export class SeedImagesComponent implements OnInit {
         }
     }
 
-    showManifest(image): void {
+    showImageDetails(image): void {
         this.currImage = image;
-        console.log(image);
         this.showDialog = true;
     }
 
-    hideManifest(): void {
+    hideImageDetails(): void {
         this.currImage = null;
+    }
+
+    onExportClick(): void {
+        this.getImageManifest(this.currImage.ID).then(data => {
+            console.log(data);
+            this.hideImageDetails();
+            this.msgs = [
+                {
+                    severity:'success',
+                    detail:`Exported <b>${data.job.title} v${data.job.jobVersion}</b>`
+                }
+            ];
+        });
     }
 
     ngOnInit() {
