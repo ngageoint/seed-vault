@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
-import { Message } from 'primeng/primeng';
 
 import 'rxjs/add/operator/toPromise';
+
+import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'seed-images',
@@ -47,13 +48,15 @@ import 'rxjs/add/operator/toPromise';
                           [responsive]="true" [dismissableMask]="true" [modal]="true" positionTop="40" class="image-details">
                     <h2>{{ currImage.Title }} v{{ currImage.JobVersion }}</h2>
                     {{ currImage.Description }}
-                    <p-footer>
-                        <button pButton type="button" (click)="onExportClick()" label="Export" [icon]="exportIcon"
+                    <pre *ngIf="!env.scale">
+                        {{ imageManifest }}
+                    </pre>
+                    <p-footer *ngIf="env.scale">
+                        <button pButton type="button" (click)="onImportClick()" label="Import" [icon]="importBtnIcon"
                                 iconPos="right"></button>
                     </p-footer>
                 </p-dialog>
             </div>
-            <p-growl [(value)]="msgs"></p-growl>
         </div>
     `,
     styles: [`
@@ -105,11 +108,12 @@ export class SeedImagesComponent implements OnInit {
     @Input() url: string;
     images: any[] = [];
     image: any;
+    imageManifest: any;
     loading: boolean;
-    showDialog: Boolean = false;
+    showDialog = false;
     currImage: any;
-    exportIcon = 'fa-cloud-upload';
-    msgs: Message[] = [];
+    importBtnIcon = 'fa-cloud-download';
+    env = environment;
 
     constructor(
         private http: Http
@@ -117,7 +121,7 @@ export class SeedImagesComponent implements OnInit {
 
     private handleError(error: any): Promise<any> {
         console.error('An error occurred', error); // for demo purposes only
-        this.exportIcon = 'fa-cloud-upload';
+        this.importBtnIcon = 'fa-cloud-download';
         this.loading = false;
         return Promise.reject(error.message || error);
     }
@@ -145,11 +149,11 @@ export class SeedImagesComponent implements OnInit {
     }
 
     getImageManifest(id): any {
-        this.exportIcon = 'fa-spinner fa-spin';
+        this.importBtnIcon = 'fa-spinner fa-spin';
         return this.http.get(`${this.url}/images/${id}/manifest`)
             .toPromise()
             .then(response => {
-                this.exportIcon = 'fa-cloud-upload';
+                this.importBtnIcon = 'fa-cloud-download';
                 return response.json();
             })
             .catch(this.handleError);
@@ -170,23 +174,18 @@ export class SeedImagesComponent implements OnInit {
     showImageDetails(image): void {
         this.currImage = image;
         this.showDialog = true;
+        this.getImageManifest(this.currImage.ID).then(data => {
+            console.log(data);
+            this.imageManifest = JSON.stringify(data);
+        });
     }
 
     hideImageDetails(): void {
         this.currImage = null;
     }
 
-    onExportClick(): void {
-        this.getImageManifest(this.currImage.ID).then(data => {
-            console.log(data);
-            this.hideImageDetails();
-            this.msgs = [
-                {
-                    severity:'success',
-                    detail:`Exported <b>${data.job.title} v${data.job.jobVersion}</b>`
-                }
-            ];
-        });
+    onImportClick(): void {
+        // send to algorithm import form
     }
 
     ngOnInit() {

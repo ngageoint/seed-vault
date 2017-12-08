@@ -8,7 +8,6 @@ import {
     ButtonModule,
     DataGridModule,
     DialogModule,
-    GrowlModule,
     PanelModule
 } from 'primeng/primeng';
 
@@ -21,7 +20,6 @@ import {
         ButtonModule,
         DataGridModule,
         DialogModule,
-        GrowlModule,
         PanelModule
     ],
     declarations: [SeedImagesComponent],
