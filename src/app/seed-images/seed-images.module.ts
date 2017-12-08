@@ -8,7 +8,9 @@ import {
     ButtonModule,
     DataGridModule,
     DialogModule,
-    PanelModule
+    GrowlModule,
+    PanelModule,
+    TooltipModule
 } from 'primeng/primeng';
 
 @NgModule({
@@ -20,7 +22,9 @@ import {
         ButtonModule,
         DataGridModule,
         DialogModule,
-        PanelModule
+        GrowlModule,
+        PanelModule,
+        TooltipModule
     ],
     declarations: [SeedImagesComponent],
     exports: [SeedImagesComponent]

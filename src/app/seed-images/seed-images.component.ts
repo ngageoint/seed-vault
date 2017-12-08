@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
+import { Message } from 'primeng/primeng';
+import * as beautify from 'js-beautify';
+import * as Clipboard from 'clipboard';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -48,9 +51,11 @@ import { environment } from '../../environments/environment';
                           [responsive]="true" [dismissableMask]="true" [modal]="true" positionTop="40" class="image-details">
                     <h2>{{ currImage.Title }} v{{ currImage.JobVersion }}</h2>
                     {{ currImage.Description }}
-                    <pre *ngIf="!env.scale">
-                        {{ imageManifest }}
-                    </pre>
+                    <div *ngIf="!env.scale && imageManifest" class="code">
+                        <button class="copy-btn" pButton type="button" (click)="onCopyClick()" icon="fa-copy" pTooltip="Copy to clipboard"
+                                tooltipPosition="left" data-clipboard-target="#manifest"></button>
+                        <pre id="manifest"><code>{{ imageManifest }}</code></pre>
+                    </div>
                     <p-footer *ngIf="env.scale">
                         <button pButton type="button" (click)="onImportClick()" label="Import" [icon]="importBtnIcon"
                                 iconPos="right"></button>
@@ -58,6 +63,7 @@ import { environment } from '../../environments/environment';
                 </p-dialog>
             </div>
         </div>
+        <p-growl [(value)]="msgs"></p-growl>
     `,
     styles: [`
         @keyframes spin {
@@ -88,12 +94,31 @@ import { environment } from '../../environments/environment';
         ::ng-deep .seed-images .search .ui-inputtext {
             font-size: 1.5em !important;
         }
+        ::ng-deep .seed-images .search .ui-autocomplete-loader {
+            display: none;
+        }
         .seed-images .results h3 {
             text-align: center;
             margin: 18px 0;
         }
         .seed-images .image-details h2 {
             font-size: 1.2em;
+        }
+        .seed-images .image-details .code {
+            position: relative;
+        }
+        .seed-images .image-details .code button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .seed-images .image-details .code pre {
+            width: 100%;
+            height: 500px;
+            overflow-x: hidden;
+            background: #efefef;
+            border: 1px solid #bbb;
+            font-size: 0.9em;
         }
         ::ng-deep .seed-images .results .ui-panel:hover {
             background: #48ACFF;
@@ -114,6 +139,8 @@ export class SeedImagesComponent implements OnInit {
     currImage: any;
     importBtnIcon = 'fa-cloud-download';
     env = environment;
+    clipboard = new Clipboard('.copy-btn');
+    msgs: Message[] = [];
 
     constructor(
         private http: Http
@@ -175,13 +202,16 @@ export class SeedImagesComponent implements OnInit {
         this.currImage = image;
         this.showDialog = true;
         this.getImageManifest(this.currImage.ID).then(data => {
-            console.log(data);
-            this.imageManifest = JSON.stringify(data);
+            this.imageManifest = beautify(JSON.stringify(data));
         });
     }
 
     hideImageDetails(): void {
         this.currImage = null;
+    }
+
+    onCopyClick(): void {
+
     }
 
     onImportClick(): void {
@@ -191,6 +221,9 @@ export class SeedImagesComponent implements OnInit {
     ngOnInit() {
         this.getImages().then(data => {
             this.images = data;
+        });
+        this.clipboard.on('success', () => {
+            this.msgs = [{severity: 'success', summary: 'Success!', detail: 'Manifest JSON copied to clipboard.'}];
         });
     }
 }
