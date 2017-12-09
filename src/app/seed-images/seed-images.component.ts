@@ -114,7 +114,7 @@ import { environment } from '../../environments/environment';
         }
         .seed-images .image-details .code pre {
             width: 100%;
-            height: 500px;
+            max-height: 300px;
             overflow-x: hidden;
             background: #efefef;
             border: 1px solid #bbb;
@@ -130,7 +130,9 @@ import { environment } from '../../environments/environment';
     `]
 })
 export class SeedImagesComponent implements OnInit {
-    @Input() url: string;
+    @Input() apiUrl: string;
+    @Input() scaleJobTypeUrl: string;
+    @Input() router: any;
     images: any[] = [];
     image: any;
     imageManifest: any;
@@ -155,7 +157,7 @@ export class SeedImagesComponent implements OnInit {
 
     getImages(): any {
         this.loading = true;
-        return this.http.get(`${this.url}/images`)
+        return this.http.get(`${this.apiUrl}/images`)
             .toPromise()
             .then(response => {
                 this.loading = false;
@@ -166,7 +168,7 @@ export class SeedImagesComponent implements OnInit {
 
     searchImages(query): any {
         this.loading = true;
-        return this.http.get(`${this.url}/images/search/${query}`)
+        return this.http.get(`${this.apiUrl}/images/search/${query}`)
             .toPromise()
             .then(response => {
                 this.loading = false;
@@ -177,7 +179,7 @@ export class SeedImagesComponent implements OnInit {
 
     getImageManifest(id): any {
         this.importBtnIcon = 'fa-spinner fa-spin';
-        return this.http.get(`${this.url}/images/${id}/manifest`)
+        return this.http.get(`${this.apiUrl}/images/${id}/manifest`)
             .toPromise()
             .then(response => {
                 this.importBtnIcon = 'fa-cloud-download';
@@ -216,6 +218,8 @@ export class SeedImagesComponent implements OnInit {
 
     onImportClick(): void {
         // send to algorithm import form
+        localStorage.setItem(`${this.currImage.Name}`, JSON.stringify(this.imageManifest));
+        this.router.navigate([this.scaleJobTypeUrl], { queryParams: { image: this.currImage.name } });
     }
 
     ngOnInit() {
