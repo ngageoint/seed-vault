@@ -9,20 +9,51 @@
     flex-direction: column;
     min-height: 100%;
 
-    h1 {
+    header {
         position: fixed;
         text-align: center;
         background: $clr-blue-drk;
         background-image: linear-gradient(to bottom, $clr-gray-50, $clr-gray-10);
         width: 100%;
         color: #fff;
-        padding: 12px 0;
-        margin-top: 0;
+
+        h1 {
+            color: #fff;
+            margin: 0;
+            padding: 12px 0;
+        }
+
+        nav {
+            position: absolute;
+            top: 10px;
+            left: 12px;
+
+            button {
+                font-size: 1.1em;
+            }
+
+            .login {
+                padding: 10px;
+            }
+        }
     }
 
     .content {
         margin-top: 70px;
         flex: 1;
         padding: 1.0em 2.0em;
+    }
+}
+
+.login, .nav {
+    margin-top: 10px;
+
+    h3 {
+        margin: 0 0 10px 0;
+        padding: 0;
+    }
+
+    input {
+        margin-bottom: 10px;
     }
 }

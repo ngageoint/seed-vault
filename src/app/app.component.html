@@ -1,6 +1,25 @@
 <div class="app">
-    <h1>Seed Vault</h1>
+    <header>
+        <nav>
+            <p-overlayPanel #op appendTo="body">
+                <div class="login" *ngIf="!authenticated">
+                    <input id="user" type="text" size="30" placeholder="Username" pInputText [(ngModel)]="username"><br />
+                    <input id="pass" type="password" size="30" placeholder="Password" pInputText [(ngModel)]="password">
+                    <div class="text-right">
+                        <button pButton type="button" label="Login" [icon]="loginIcon" (click)="login()"
+                                [disabled]="!username || !password || loading"></button>
+                    </div>
+                </div>
+                <div class="nav" *ngIf="authenticated">
+                    {{ userData }}
+                </div>
+            </p-overlayPanel>
+            <button type="text" pButton icon="fa-bars" class="ui-button-secondary" (click)="op.toggle($event)"></button>
+            <p-growl life="5000" styleClass="text-left" [(value)]="msgs"></p-growl>
+        </nav>
+        <h1>Seed Vault</h1>
+    </header>
     <div class="content">
-        <seed-images apiUrl="http://ec2-18-217-60-133.us-east-2.compute.amazonaws.com"></seed-images>
+        <seed-images [apiUrl]="apiUrl"></seed-images>
     </div>
 </div>
