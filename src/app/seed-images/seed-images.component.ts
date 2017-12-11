@@ -131,7 +131,7 @@ import { environment } from '../../environments/environment';
 })
 export class SeedImagesComponent implements OnInit {
     @Input() apiUrl: string;
-    @Input() scaleJobTypeUrl: string;
+    @Input() importUrl: string;
     @Input() router: any;
     images: any[] = [];
     image: any;
@@ -219,7 +219,7 @@ export class SeedImagesComponent implements OnInit {
     onImportClick(): void {
         // send to algorithm import form
         localStorage.setItem(`${this.currImage.Name}`, JSON.stringify(this.imageManifest));
-        this.router.navigate([this.scaleJobTypeUrl], { queryParams: { image: this.currImage.name } });
+        this.router.navigate([this.importUrl], { queryParams: { image: this.currImage.name } });
     }
 
     ngOnInit() {
