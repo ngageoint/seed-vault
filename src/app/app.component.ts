@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Http } from '@angular/http';
 import { Message } from 'primeng/primeng';
 
+import { environment } from '../environments/environment';
+
 @Component({
     selector: 'seed-root',
     templateUrl: './app.component.html',
@@ -16,6 +18,7 @@ export class AppComponent {
     password: string;
     userData: any;
     msgs: Message[] = [];
+    env = environment;
 
     constructor(
         private http: Http

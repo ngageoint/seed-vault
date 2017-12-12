@@ -6,8 +6,6 @@ import * as Clipboard from 'clipboard';
 
 import 'rxjs/add/operator/toPromise';
 
-import { environment } from '../../environments/environment';
-
 @Component({
     selector: 'seed-images',
     template: `
@@ -51,12 +49,12 @@ import { environment } from '../../environments/environment';
                           [responsive]="true" [dismissableMask]="true" [modal]="true" positionTop="40" class="image-details">
                     <h2>{{ currImage.Title }} v{{ currImage.JobVersion }}</h2>
                     {{ currImage.Description }}
-                    <div *ngIf="!env.scale && imageManifest" class="code">
+                    <div *ngIf="!environment.scale && imageManifest" class="code">
                         <button class="copy-btn" pButton type="button" (click)="onCopyClick()" icon="fa-copy" pTooltip="Copy to clipboard"
                                 tooltipPosition="left" data-clipboard-target="#manifest"></button>
                         <pre id="manifest"><code>{{ imageManifest }}</code></pre>
                     </div>
-                    <p-footer *ngIf="env.scale">
+                    <p-footer *ngIf="environment.scale">
                         <button pButton type="button" (click)="onImportClick()" label="Import" [icon]="importBtnIcon"
                                 iconPos="right"></button>
                     </p-footer>
@@ -130,6 +128,7 @@ import { environment } from '../../environments/environment';
     `]
 })
 export class SeedImagesComponent implements OnInit {
+    @Input() environment: any;
     @Input() apiUrl: string;
     @Input() importUrl: string;
     @Input() router: any;
@@ -140,7 +139,6 @@ export class SeedImagesComponent implements OnInit {
     showDialog = false;
     currImage: any;
     importBtnIcon = 'fa-cloud-download';
-    env = environment;
     clipboard = new Clipboard('.copy-btn');
     msgs: Message[] = [];
 
