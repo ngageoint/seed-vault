@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { SeedImagesComponent } from './seed-images.component';
 
@@ -7,7 +7,7 @@ import { SeedImagesComponent } from './seed-images.component';
 describe('SeedImagesComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpModule],
+            imports: [HttpClientModule],
             providers: [SeedImagesComponent]
         });
     });

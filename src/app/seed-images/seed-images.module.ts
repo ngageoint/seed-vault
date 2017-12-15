@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SeedImagesComponent } from './seed-images.component';
@@ -16,6 +17,7 @@ import {
 @NgModule({
     imports: [
         CommonModule,
+        HttpClientModule,
         FormsModule,
         // prime-ng
         AutoCompleteModule,

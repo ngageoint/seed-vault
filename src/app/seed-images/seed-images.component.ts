@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Message } from 'primeng/primeng';
 import * as beautify from 'js-beautify';
 import * as Clipboard from 'clipboard';
@@ -143,57 +143,73 @@ export class SeedImagesComponent implements OnInit {
     msgs: Message[] = [];
 
     constructor(
-        private http: Http
+        private http: HttpClient
     ) {}
 
-    private handleError(error: any): Promise<any> {
-        console.error('An error occurred', error); // for demo purposes only
+    private handleError(err: any, summary?: string): void {
+        let detail = '';
+        if (err.status === 0) {
+            detail = 'CORS error: Unable to access server';
+        } else {
+            detail = err.statusText.length > 0 ? err.statusText : 'Server error';
+        }
+        this.msgs = [];
+        this.msgs.push({severity: 'error', summary: summary || 'Error', detail: detail});
         this.importBtnIcon = 'fa-cloud-download';
         this.loading = false;
-        return Promise.reject(error.message || error);
     }
 
-    getImages(): any {
+    getImages(): Promise<any> {
         this.loading = true;
         return this.http.get(`${this.apiUrl}/images`)
             .toPromise()
             .then(response => {
                 this.loading = false;
-                return response.json();
+                return Promise.resolve(response);
             })
-            .catch(this.handleError);
+            .catch(err => {
+                return Promise.reject(err);
+            });
     }
 
-    searchImages(query): any {
+    searchImages(query): Promise<any> {
         this.loading = true;
         return this.http.get(`${this.apiUrl}/images/search/${query}`)
             .toPromise()
             .then(response => {
                 this.loading = false;
-                return response.json();
+                return Promise.resolve(response);
             })
-            .catch(this.handleError);
+            .catch(err => {
+                return Promise.reject(err);
+            });
     }
 
-    getImageManifest(id): any {
+    getImageManifest(id): Promise<any> {
         this.importBtnIcon = 'fa-spinner fa-spin';
         return this.http.get(`${this.apiUrl}/images/${id}/manifest`)
             .toPromise()
             .then(response => {
                 this.importBtnIcon = 'fa-cloud-download';
-                return response.json();
+                return Promise.resolve(response);
             })
-            .catch(this.handleError);
+            .catch(err => {
+                return Promise.reject(err);
+            });
     }
 
     filterImages(event): void {
         if (event.query) {
             this.searchImages(event.query).then(data => {
                 this.images = data;
+            }).catch(err => {
+                this.handleError(err, 'Image Search Failed');
             });
         } else {
             this.getImages().then(data => {
                 this.images = data;
+            }).catch(err => {
+                this.handleError(err, 'Image Retrieval Failed');
             });
         }
     }
@@ -203,6 +219,8 @@ export class SeedImagesComponent implements OnInit {
         this.showDialog = true;
         this.getImageManifest(this.currImage.ID).then(data => {
             this.imageManifest = beautify(JSON.stringify(data));
+        }).catch(err => {
+            this.handleError(err, 'Manifest Retrieval Failed');
         });
     }
 
@@ -223,6 +241,8 @@ export class SeedImagesComponent implements OnInit {
     ngOnInit() {
         this.getImages().then(data => {
             this.images = data;
+        }).catch(err => {
+            this.handleError(err, 'Image Retrieval Failed');
         });
         this.clipboard.on('success', () => {
             this.msgs = [{severity: 'success', summary: 'Success!', detail: 'Manifest JSON copied to clipboard.'}];

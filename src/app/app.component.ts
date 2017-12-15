@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Message } from 'primeng/primeng';
 
 import { environment } from '../environments/environment';
@@ -21,7 +21,7 @@ export class AppComponent {
     env = environment;
 
     constructor(
-        private http: Http
+        private http: HttpClient
     ) {}
 
     private doLogin(creds) {
@@ -33,9 +33,11 @@ export class AppComponent {
                 this.loading = false;
                 this.loginIcon = 'fa-sign-in';
                 this.authenticated = true;
-                return response.json();
+                return Promise.resolve(response);
             })
-            .catch(this.handleError);
+            .catch(err => {
+                return Promise.reject(err);
+            });
     }
 
     login(): any {
@@ -43,15 +45,21 @@ export class AppComponent {
             this.doLogin({ username: this.username, password: this.password }).then(data => {
                 this.userData = JSON.stringify(data);
             }).catch(err => {
-                const detail = err.statusText.length > 0 ? err.statusText : 'Server error';
-                this.msgs = [{severity: 'error', summary: 'Login Failed', detail: detail}];
-                this.loading = false;
-                this.loginIcon = 'fa-sign-in';
+                this.handleError(err, 'Login Failed');
             });
         }
     }
 
-    private handleError(error: any): Promise<any> {
-        return Promise.reject(error.message || error);
+    private handleError(err: any, summary?: string): void {
+        let detail = '';
+        if (err.status === 0) {
+            detail = 'CORS error: Unable to access server';
+        } else {
+            detail = err.statusText.length > 0 ? err.statusText : 'Server error';
+        }
+        this.msgs = [];
+        this.msgs.push({severity: 'error', summary: summary || 'Error', detail: detail});
+        this.loading = false;
+        this.loginIcon = 'fa-sign-in';
     }
 }

@@ -1,4 +1,5 @@
 import { TestBed, async } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
 import { APP_BASE_HREF } from '@angular/common';
 
 import { AppComponent } from './app.component';
@@ -10,7 +11,8 @@ describe('AppComponent', () => {
         TestBed.configureTestingModule({
             declarations: [],
             imports: [
-                AppModule
+                AppModule,
+                HttpClientModule
             ],
             providers: [{
                 provide: APP_BASE_HREF,
