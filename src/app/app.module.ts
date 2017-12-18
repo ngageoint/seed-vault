@@ -4,7 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
-import { ButtonModule, GrowlModule, InputTextModule, OverlayPanelModule } from 'primeng/primeng';
+import { CookieService } from 'ngx-cookie-service';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+
+import {
+    ButtonModule, CheckboxModule, GrowlModule, InputTextModule, MenuModule,
+    OverlayPanelModule
+} from 'primeng/primeng';
 
 import { AppRoutingModule } from './app-routing.module';
 import { SeedImagesModule } from './seed-images/seed-images.module';
@@ -21,14 +27,18 @@ import { StateService } from './state.service';
         BrowserModule,
         FormsModule,
         HttpClientModule,
+        NgIdleKeepaliveModule.forRoot(),
+        SeedImagesModule,
         // primeng
         ButtonModule,
+        CheckboxModule,
         GrowlModule,
         InputTextModule,
-        OverlayPanelModule,
-        SeedImagesModule
+        MenuModule,
+        OverlayPanelModule
     ],
     providers: [
+        CookieService,
         StateService
     ],
     bootstrap: [AppComponent]

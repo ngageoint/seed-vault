@@ -28,4 +28,12 @@ export class StateService {
     public setImages(data): void {
         this.state.images = data;
     }
+
+    public getAuthToken(): any {
+        return this.state.authToken;
+    }
+
+    public setAuthToken(data): void {
+        this.state.authToken = data;
+    }
 }

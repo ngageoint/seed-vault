@@ -1,17 +1,18 @@
 <div class="app">
     <header>
         <nav>
-            <p-overlayPanel #op appendTo="body">
+            <p-overlayPanel #op appendTo="body" (onAfterShow)="initOverlayPanel(op)">
                 <div class="login" *ngIf="!authenticated">
-                    <input id="user" type="text" size="30" placeholder="Username" pInputText [(ngModel)]="username"><br />
-                    <input id="pass" type="password" size="30" placeholder="Password" pInputText [(ngModel)]="password">
+                    <input id="user" type="text" size="30" placeholder="Username" pInputText [(ngModel)]="username" #user><br />
+                    <input id="pass" type="password" size="30" placeholder="Password" pInputText [(ngModel)]="password" (keypress)="onKeyPress($event)"><br />
+                    <p-checkbox [(ngModel)]="remember" binary="true" label="Remember Me"></p-checkbox>
                     <div class="text-right">
                         <button pButton type="button" label="Login" [icon]="loginIcon" (click)="login()"
                                 [disabled]="!username || !password || loading"></button>
                     </div>
                 </div>
                 <div class="nav" *ngIf="authenticated">
-                    {{ userData }}
+                    <p-menu [model]="items"></p-menu>
                 </div>
             </p-overlayPanel>
             <button type="text" pButton icon="fa-bars" class="ui-button-secondary" (click)="op.toggle($event)"></button>
