@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 
 import { CookieService } from 'ngx-cookie-service';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { SeedImagesModule } from 'seed-images';
 
 import {
     ButtonModule, CheckboxModule, GrowlModule, InputTextModule, MenuModule,
@@ -13,7 +14,6 @@ import {
 } from 'primeng/primeng';
 
 import { AppRoutingModule } from './app-routing.module';
-import { SeedImagesModule } from './seed-images/seed-images.module';
 import { AppComponent } from './app.component';
 import { StateService } from './state.service';
 
