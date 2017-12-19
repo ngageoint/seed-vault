@@ -22,48 +22,11 @@
             margin: 0;
             padding: 12px 0;
         }
-
-        nav {
-            position: absolute;
-            top: 10px;
-            left: 12px;
-
-            button {
-                font-size: 1.1em;
-            }
-
-            .login {
-                padding: 10px;
-            }
-        }
     }
 
     .content {
         margin-top: 70px;
         flex: 1;
         padding: 1.0em 2.0em;
-    }
-}
-
-::ng-deep .ui-overlaypanel-content {
-    padding: 0;
-}
-
-.login {
-    margin: 10px;
-
-    h3 {
-        margin: 0 0 10px 0;
-        padding: 0;
-    }
-
-    input {
-        margin-bottom: 10px;
-    }
-}
-
-.nav {
-    ::ng-deep .ui-widget-content {
-        border: none;
     }
 }

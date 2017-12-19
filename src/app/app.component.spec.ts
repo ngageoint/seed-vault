@@ -2,8 +2,6 @@ import { TestBed, async } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { APP_BASE_HREF } from '@angular/common';
 
-import { CookieService } from 'ngx-cookie-service';
-import { StateService } from './state.service';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
@@ -16,7 +14,7 @@ describe('AppComponent', () => {
                 AppModule,
                 HttpClientModule
             ],
-            providers: [CookieService, StateService, {
+            providers: [{
                 provide: APP_BASE_HREF,
                 useValue: '/'
             }]
