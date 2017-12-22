@@ -63,7 +63,7 @@ export class AuthenticationComponent implements OnInit {
     private doLogin(creds) {
         this.loading = true;
         this.loginIcon = 'fa-spinner fa-spin';
-        return this.http.post(`${this.env.apiUrl}/login`, creds)
+        return this.http.post(`${this.env.siloUrl}/login`, creds)
             .toPromise()
             .then(response => {
                 this.loading = false;
