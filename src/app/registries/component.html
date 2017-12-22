@@ -1,3 +1,15 @@
-<p>
-  registries works!
-</p>
+<h1>Registries</h1>
+<p-dataTable [value]="registries" [responsive]="true">
+    <p-column styleClass="col-icon">
+        <ng-template let-registry="rowData" pTemplate="header">
+            <button pButton type="button" [icon]="registriesIcon" [disabled]="isScanning" (click)="scanRegistry()"></button>
+        </ng-template>
+        <ng-template let-registry="rowData" pTemplate="body">
+            <button pButton type="button" [icon]="registry.icon" [disabled]="registry.isScanning" (click)="scanRegistry(registry)"></button>
+        </ng-template>
+    </p-column>
+    <p-column field="Name" header="Name"></p-column>
+    <p-column field="Url" header="URL"></p-column>
+    <p-column field="Org" header="Organization"></p-column>
+</p-dataTable>
+<p-growl life="5000" styleClass="text-left" [(value)]="msgs"></p-growl>

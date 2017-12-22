@@ -131,8 +131,8 @@ export class AuthenticationComponent implements OnInit {
             }
         }
         // set up process to check for user activity
-        this.idle.setIdle(30); // let user sit idle for 15 minutes
-        this.idle.setTimeout(5); // after 15 minutes, wait 30 seconds before timeout
+        this.idle.setIdle(900); // let user sit idle for 15 minutes
+        this.idle.setTimeout(30); // after 15 minutes, wait 30 seconds before timeout
         this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
         this.idle.onTimeout.subscribe(() => {

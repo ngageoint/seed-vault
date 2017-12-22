@@ -1,4 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -12,7 +13,7 @@ describe('RegistriesComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [RegistriesComponent],
-            imports: [],
+            imports: [HttpClientModule],
             providers: [
                 StateService,
                 { provide: Router, useClass: class { navigate = jasmine.createSpy('navigate'); } }

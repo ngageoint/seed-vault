@@ -9,7 +9,7 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { SeedImagesModule } from 'seed-images';
 
 import {
-    ButtonModule, CheckboxModule, GrowlModule, InputTextModule, MenuModule,
+    ButtonModule, CheckboxModule, DataTableModule, GrowlModule, InputTextModule, MenuModule,
     OverlayPanelModule
 } from 'primeng/primeng';
 
@@ -40,6 +40,7 @@ import { SearchComponent } from './search/component';
         // primeng
         ButtonModule,
         CheckboxModule,
+        DataTableModule,
         GrowlModule,
         InputTextModule,
         MenuModule,
