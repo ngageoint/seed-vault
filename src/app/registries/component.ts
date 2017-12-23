@@ -95,7 +95,7 @@ export class RegistriesComponent implements OnInit {
                 if (registry) {
                     registry.icon = 'fa-refresh';
                     registry.isScanning = false;
-                    detail = `Failed to scan ${registry.Name}`
+                    detail = `Failed to scan ${registry.Name}`;
                 } else {
                     this.registriesIcon = 'fa-refresh';
                     detail = 'Failed to scan registries';

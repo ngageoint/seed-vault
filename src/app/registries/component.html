@@ -1,11 +1,13 @@
 <h1>Registries</h1>
 <p-dataTable [value]="registries" [responsive]="true">
-    <p-column styleClass="col-icon">
+    <p-column styleClass="col-icon-btn">
         <ng-template let-registry="rowData" pTemplate="header">
-            <button pButton type="button" [icon]="registriesIcon" [disabled]="isScanning" (click)="scanRegistry()"></button>
+            <button pButton type="button" [icon]="registriesIcon" [disabled]="isScanning" (click)="scanRegistry()"
+                    pTooltip="Scan All Registries"></button>
         </ng-template>
         <ng-template let-registry="rowData" pTemplate="body">
-            <button pButton type="button" [icon]="registry.icon" [disabled]="registry.isScanning" (click)="scanRegistry(registry)"></button>
+            <button pButton type="button" [icon]="registry.icon" [disabled]="registry.isScanning"
+                    (click)="scanRegistry(registry)" pTooltip="Scan {{ registry.Name }}"></button>
         </ng-template>
     </p-column>
     <p-column field="Name" header="Name"></p-column>

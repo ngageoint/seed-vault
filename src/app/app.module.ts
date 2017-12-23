@@ -10,7 +10,7 @@ import { SeedImagesModule } from 'seed-images';
 
 import {
     ButtonModule, CheckboxModule, DataTableModule, GrowlModule, InputTextModule, MenuModule,
-    OverlayPanelModule
+    OverlayPanelModule, TooltipModule
 } from 'primeng/primeng';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -44,7 +44,8 @@ import { SearchComponent } from './search/component';
         GrowlModule,
         InputTextModule,
         MenuModule,
-        OverlayPanelModule
+        OverlayPanelModule,
+        TooltipModule
     ],
     providers: [
         CookieService,

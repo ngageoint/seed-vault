@@ -19,9 +19,14 @@ h1:first-of-type {
     margin: 3px 0;
 }
 
-.col-icon {
+.col-icon-btn {
     width: 50px;
     text-align: center;
+
+    button {
+        padding: 0;
+        font-size: 0.9em !important;
+    }
 }
 
 .text-center {
