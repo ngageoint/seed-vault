@@ -1,3 +1,14 @@
-<p>
-  users works!
-</p>
+<h1>Users</h1>
+<p-dataTable [value]="users" [responsive]="true">
+    <p-column styleClass="col-icon-btn">
+        <ng-template let-user="rowData" pTemplate="header">
+            <button pButton type="button" icon="fa-user-plus" (click)="addUser()" pTooltip="Add User"></button>
+        </ng-template>
+        <ng-template let-user="rowData" pTemplate="body">
+            <button pButton type="button" icon="fa-remove" (click)="deleteUser(user)" pTooltip="Delete {{ user.username }}"></button>
+        </ng-template>
+    </p-column>
+    <p-column field="username" header="Username"></p-column>
+    <p-column field="role" header="Role"></p-column>
+</p-dataTable>
+<p-growl life="5000" styleClass="text-left" [(value)]="msgs"></p-growl>

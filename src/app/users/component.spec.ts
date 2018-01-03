@@ -1,18 +1,19 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StateService } from '../state.service';
 import { UsersComponent } from './component';
 
-describe('RegistriesComponent', () => {
+describe('UsersComponent', () => {
     let component: UsersComponent;
     let fixture: ComponentFixture<UsersComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [UsersComponent],
-            imports: [],
+            imports: [HttpClientModule],
             providers: [
                 StateService,
                 { provide: Router, useClass: class { navigate = jasmine.createSpy('navigate'); } }
