@@ -5,10 +5,31 @@
             <button pButton type="button" icon="fa-user-plus" (click)="addUser()" pTooltip="Add User"></button>
         </ng-template>
         <ng-template let-user="rowData" pTemplate="body">
-            <button pButton type="button" icon="fa-remove" (click)="deleteUser(user)" pTooltip="Delete {{ user.username }}"></button>
+            <button pButton type="button" icon="fa-remove" class="ui-button-danger" (click)="deleteUser(user)"
+                    pTooltip="Delete {{ user.username }}"></button>
         </ng-template>
     </p-column>
     <p-column field="username" header="Username"></p-column>
     <p-column field="role" header="Role"></p-column>
 </p-dataTable>
+<p-dialog header="User Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+          (onShow)="initDialog()">
+    <div *ngIf="user">
+        <div class="ui-g">
+            <div class="ui-g-4"><label for="username">Username</label></div>
+            <div class="ui-g-8"><input pInputText id="username" [(ngModel)]="user.username" #username /></div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-4"><label for="role">Role</label></div>
+            <div class="ui-g-8"><p-dropdown id="role" [options]="roles" [(ngModel)]="user.role"
+                                            [autoWidth]="false" appendTo="body"></p-dropdown></div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close" (click)="cancel()" label="Cancel"></button>
+            <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+        </div>
+    </p-footer>
+</p-dialog>
 <p-growl life="5000" styleClass="text-left" [(value)]="msgs"></p-growl>

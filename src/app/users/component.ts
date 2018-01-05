@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient} from '@angular/common/http';
-import { Message } from 'primeng/primeng';
+import { Message, SelectItem } from 'primeng/primeng';
 
 import { environment } from '../../environments/environment';
 
@@ -13,10 +13,14 @@ import { StateService } from '../state.service';
     styleUrls: ['./component.scss']
 })
 export class UsersComponent implements OnInit {
+    @ViewChild('username') userEl: ElementRef;
     env = environment;
     msgs: Message[] = [];
     users: any[] = [];
+    user: any;
     loading: boolean;
+    displayDialog: boolean;
+    roles: SelectItem[] = [];
 
     constructor(
         private router: Router,
@@ -57,15 +61,62 @@ export class UsersComponent implements OnInit {
             });
     }
 
+    private saveUser() {
+        this.loading = true;
+        return this.http.post(
+                `${this.env.siloUrl}/user/add`,
+                this.user,
+                { headers: {'Authorization': this.stateService.getAuthToken() } }
+            )
+            .toPromise()
+            .then(response => {
+                this.loading = false;
+                return Promise.resolve(response);
+            })
+            .catch(err => {
+                return Promise.reject(err);
+            });
+    }
+
     addUser() {
-        console.log('add user');
+        this.user = {
+            username: null,
+            role: null
+        };
+        this.displayDialog = true;
     }
 
     deleteUser(user) {
         console.log(user);
     }
 
+    save() {
+        this.saveUser().then((data: any) => {
+            console.log(data);
+            this.displayDialog = false;
+            this.user = null;
+        }).catch(err => {
+            this.handleError(err, 'Error creating user');
+        });
+    }
+
+    cancel() {
+        this.displayDialog = false;
+        this.user = null;
+    }
+
+    initDialog() {
+        this.userEl.nativeElement.focus();
+    }
+
     ngOnInit() {
+        this.roles.push({
+            label: 'Administrator',
+            value: 'admin'
+        }, {
+            label: 'User',
+            value: 'user'
+        });
         this.getUsers().then((data: any) => {
             this.users = data;
         }).catch(err => {

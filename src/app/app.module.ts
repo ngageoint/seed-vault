@@ -9,8 +9,8 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { SeedImagesModule } from 'seed-images';
 
 import {
-    ButtonModule, CheckboxModule, DataTableModule, GrowlModule, InputTextModule, MenuModule,
-    OverlayPanelModule, TooltipModule
+    ButtonModule, CheckboxModule, DataTableModule, DialogModule, DropdownModule, GrowlModule, InputTextModule,
+    MenuModule, OverlayPanelModule, TooltipModule
 } from 'primeng/primeng';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -41,6 +41,8 @@ import { SearchComponent } from './search/component';
         ButtonModule,
         CheckboxModule,
         DataTableModule,
+        DialogModule,
+        DropdownModule,
         GrowlModule,
         InputTextModule,
         MenuModule,

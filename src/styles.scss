@@ -36,3 +36,9 @@ h1:first-of-type {
 .text-right {
     text-align: right;
 }
+
+ul.unstyled {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
