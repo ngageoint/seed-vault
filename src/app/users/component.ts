@@ -21,6 +21,8 @@ export class UsersComponent implements OnInit {
     loading: boolean;
     displayDialog: boolean;
     roles: SelectItem[] = [];
+    saveIcon = 'fa-check';
+    passwordVerify: string;
 
     constructor(
         private router: Router,
@@ -63,10 +65,28 @@ export class UsersComponent implements OnInit {
 
     private saveUser() {
         this.loading = true;
+        this.saveIcon = 'fa-cog fa-spin';
         return this.http.post(
                 `${this.env.siloUrl}/user/add`,
                 this.user,
-                { headers: {'Authorization': this.stateService.getAuthToken() } }
+                { headers: {'Authorization': `token ${this.stateService.getAuthToken()}` } }
+            )
+            .toPromise()
+            .then(response => {
+                this.loading = false;
+                this.saveIcon = 'fa-check';
+                return Promise.resolve(response);
+            })
+            .catch(err => {
+                return Promise.reject(err);
+            });
+    }
+
+    private deleteUser(id: number) {
+        this.loading = true;
+        return this.http.delete(
+                `${this.env.siloUrl}/user/delete/${id}`,
+                { headers: {'Authorization': `token ${this.stateService.getAuthToken()}` } }
             )
             .toPromise()
             .then(response => {
@@ -81,23 +101,57 @@ export class UsersComponent implements OnInit {
     addUser() {
         this.user = {
             username: null,
-            role: null
+            password: null,
+            role: this.roles[0].value
         };
         this.displayDialog = true;
     }
 
-    deleteUser(user) {
-        console.log(user);
+    delete(user: any) {
+        user.icon = 'fa-cog fa-spin';
+        user.isRemoving = true;
+        this.deleteUser(user.ID).then(() => {
+            let users = [...this.users];
+            users.splice(users.indexOf(user), 1);
+            this.users = users;
+        }).catch(err => {
+            user.icon = 'fa-remove';
+            user.isRemoving = false;
+            this.handleError(err, 'Error deleting user');
+        });
     }
 
     save() {
-        this.saveUser().then((data: any) => {
-            console.log(data);
-            this.displayDialog = false;
-            this.user = null;
-        }).catch(err => {
-            this.handleError(err, 'Error creating user');
-        });
+        if (this.user.password === this.passwordVerify) {
+            this.saveUser().then((data: any) => {
+                let users = [...this.users];
+                users.push({
+                    ID: data.ID,
+                    username: data.username,
+                    role: data.role,
+                    icon: 'fa-remove',
+                    isRemoving: false
+                });
+                this.users = users;
+                this.displayDialog = false;
+                this.user = null;
+                this.msgs = [];
+                this.msgs.push({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: `${data.username} successfully added`
+                });
+            }).catch(err => {
+                this.handleError(err, 'Error creating user');
+            });
+        } else {
+            this.msgs = [];
+            this.msgs.push({
+                severity: 'error',
+                summary: 'Password verification failed',
+                detail: `Make sure the same value is entered in both fields.`
+            });
+        }
     }
 
     cancel() {
@@ -118,6 +172,10 @@ export class UsersComponent implements OnInit {
             value: 'user'
         });
         this.getUsers().then((data: any) => {
+            data.forEach(d => {
+                d.icon = 'fa-remove';
+                d.isRemoving = false;
+            });
             this.users = data;
         }).catch(err => {
             this.handleError(err, 'Unable to get users');

@@ -5,8 +5,8 @@
             <button pButton type="button" icon="fa-user-plus" (click)="addUser()" pTooltip="Add User"></button>
         </ng-template>
         <ng-template let-user="rowData" pTemplate="body">
-            <button pButton type="button" icon="fa-remove" class="ui-button-danger" (click)="deleteUser(user)"
-                    pTooltip="Delete {{ user.username }}"></button>
+            <button pButton type="button" [icon]="user.icon" [disabled]="user.isRemoving" class="ui-button-danger"
+                    (click)="delete(user)" pTooltip="Delete {{ user.username }}"></button>
         </ng-template>
     </p-column>
     <p-column field="username" header="Username"></p-column>
@@ -20,6 +20,14 @@
             <div class="ui-g-8"><input pInputText id="username" [(ngModel)]="user.username" #username /></div>
         </div>
         <div class="ui-g">
+            <div class="ui-g-4"><label for="password">Password</label></div>
+            <div class="ui-g-8"><input pInputText type="password" id="password" [(ngModel)]="user.password" /></div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-4"><label for="verify">Verify</label></div>
+            <div class="ui-g-8"><input pInputText type="password" id="verify" [(ngModel)]="passwordVerify" /></div>
+        </div>
+        <div class="ui-g">
             <div class="ui-g-4"><label for="role">Role</label></div>
             <div class="ui-g-8"><p-dropdown id="role" [options]="roles" [(ngModel)]="user.role"
                                             [autoWidth]="false" appendTo="body"></p-dropdown></div>
@@ -28,7 +36,7 @@
     <p-footer>
         <div class="ui-dialog-buttonpane ui-helper-clearfix">
             <button type="button" pButton icon="fa-close" (click)="cancel()" label="Cancel"></button>
-            <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+            <button type="button" pButton [icon]="saveIcon" (click)="save()" label="Save" [disabled]="loading"></button>
         </div>
     </p-footer>
 </p-dialog>

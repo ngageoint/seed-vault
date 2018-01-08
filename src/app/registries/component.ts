@@ -71,7 +71,10 @@ export class RegistriesComponent implements OnInit {
             url = `${this.env.siloUrl}/registries/scan`;
             this.isScanning = true;
         }
-        this.http.get(url, { headers: {'Authorization': this.stateService.getAuthToken() } })
+        this.http.get(url, {
+                headers: {'Authorization': `token ${this.stateService.getAuthToken()}` },
+                responseType: 'text'
+            })
             .toPromise()
             .then(response => {
                 console.log(response);
