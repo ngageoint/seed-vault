@@ -1976,6 +1976,13 @@ body .ui-menu.ui-shadow {
     -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
 }
+body .ui-menu .ui-menuitem-link, body .ui-menu .ui-menuitem-link:visited {
+    color: $clr-black;
+}
+body .ui-menu .ui-menuitem-link:hover {
+    background: $clr-highlight;
+    color: $clr-white;
+}
 body .ui-menu .ui-menu-parent .ui-submenu-icon {
     margin-top: 0.2em;
 }

@@ -111,7 +111,7 @@ export class UsersComponent implements OnInit {
         user.icon = 'fa-cog fa-spin';
         user.isRemoving = true;
         this.deleteUser(user.ID).then(() => {
-            let users = [...this.users];
+            const users = [...this.users];
             users.splice(users.indexOf(user), 1);
             this.users = users;
         }).catch(err => {
@@ -124,7 +124,7 @@ export class UsersComponent implements OnInit {
     save() {
         if (this.user.password === this.passwordVerify) {
             this.saveUser().then((data: any) => {
-                let users = [...this.users];
+                const users = [...this.users];
                 users.push({
                     ID: data.ID,
                     username: data.username,
