@@ -35,7 +35,8 @@
     </div>
     <p-footer>
         <div class="ui-dialog-buttonpane ui-helper-clearfix">
-            <button type="button" pButton icon="fa-close" (click)="cancel()" label="Cancel"></button>
+            <button type="button" class="ui-button-secondary" pButton icon="fa-close" (click)="cancel()"
+                    label="Cancel"></button>
             <button type="button" pButton [icon]="saveIcon" (click)="save()" label="Save" [disabled]="loading"></button>
         </div>
     </p-footer>

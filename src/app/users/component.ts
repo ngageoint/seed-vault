@@ -6,6 +6,7 @@ import { Message, SelectItem } from 'primeng/primeng';
 import { environment } from '../../environments/environment';
 
 import { StateService } from '../state.service';
+import { User } from './user.model';
 
 @Component({
     selector: 'seed-users',
@@ -16,8 +17,8 @@ export class UsersComponent implements OnInit {
     @ViewChild('username') userEl: ElementRef;
     env = environment;
     msgs: Message[] = [];
-    users: any[] = [];
-    user: any;
+    users: any;
+    user: User;
     loading: boolean;
     displayDialog: boolean;
     roles: SelectItem[] = [];
@@ -32,6 +33,14 @@ export class UsersComponent implements OnInit {
         if (!this.stateService.getAuthToken()) {
             this.router.navigate(['/']);
         }
+        this.roles.push({
+            label: 'Administrator',
+            value: 'admin'
+        }, {
+            label: 'User',
+            value: 'user'
+        });
+        this.user = new User(this.roles[0].value);
     }
 
     private handleError(err: any, summary?: string): void {
@@ -99,15 +108,10 @@ export class UsersComponent implements OnInit {
     }
 
     addUser() {
-        this.user = {
-            username: null,
-            password: null,
-            role: this.roles[0].value
-        };
         this.displayDialog = true;
     }
 
-    delete(user: any) {
+    delete(user: User) {
         user.icon = 'fa-cog fa-spin';
         user.isRemoving = true;
         this.deleteUser(user.ID).then(() => {
@@ -134,7 +138,7 @@ export class UsersComponent implements OnInit {
                 });
                 this.users = users;
                 this.displayDialog = false;
-                this.user = null;
+                this.user = new User(this.roles[0].value);
                 this.msgs = [];
                 this.msgs.push({
                     severity: 'success',
@@ -156,27 +160,24 @@ export class UsersComponent implements OnInit {
 
     cancel() {
         this.displayDialog = false;
-        this.user = null;
+        this.user = new User(this.roles[0].value);
     }
 
     initDialog() {
-        this.userEl.nativeElement.focus();
+        // wrap in a setTimeout to trigger another change detection :/
+        // https://github.com/angular/angular/issues/6005
+        setTimeout(() => {
+            this.userEl.nativeElement.focus();
+        });
     }
 
     ngOnInit() {
-        this.roles.push({
-            label: 'Administrator',
-            value: 'admin'
-        }, {
-            label: 'User',
-            value: 'user'
-        });
         this.getUsers().then((data: any) => {
             data.forEach(d => {
                 d.icon = 'fa-remove';
                 d.isRemoving = false;
             });
-            this.users = data;
+            this.users = User.transformer(data);
         }).catch(err => {
             this.handleError(err, 'Unable to get users');
         });
