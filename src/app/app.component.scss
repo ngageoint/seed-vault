@@ -16,6 +16,12 @@
         background-image: linear-gradient(to bottom, $clr-gray-50, $clr-gray-10);
         width: 100%;
         color: #fff;
+        display: flex;
+        justify-content: space-between;
+
+        .header-btn {
+            margin: 13px 5px;
+        }
 
         h1 {
             color: #fff;
