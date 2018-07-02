@@ -36,6 +36,7 @@
         "core-js": "^2.5.3",
         "font-awesome": "^4.7.0",
         "js-beautify": "^1.7.5",
+        "lodash": "^4.17.5",
         "ngx-cookie-service": "^1.0.9",
         "normalize.css": "^7.0.0",
         "primeng": "^5.2.3",
