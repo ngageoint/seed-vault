@@ -76,7 +76,7 @@ export class UsersComponent implements OnInit {
         this.loading = true;
         this.saveIcon = 'fa-cog fa-spin';
         return this.http.post(
-                `${this.env.siloUrl}/user/add`,
+                `${this.env.siloUrl}/users/add`,
                 this.user,
                 { headers: {'Authorization': `token ${this.stateService.getAuthToken()}` } }
             )
@@ -94,7 +94,7 @@ export class UsersComponent implements OnInit {
     private deleteUser(id: number) {
         this.loading = true;
         return this.http.delete(
-                `${this.env.siloUrl}/user/delete/${id}`,
+                `${this.env.siloUrl}/users/delete/${id}`,
                 { headers: {'Authorization': `token ${this.stateService.getAuthToken()}` } }
             )
             .toPromise()

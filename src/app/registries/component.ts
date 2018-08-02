@@ -65,7 +65,7 @@ export class RegistriesComponent implements OnInit {
         if (registry) {
             registry.icon = 'fa-refresh fa-spin';
             registry.isScanning = true;
-            url = `${this.env.siloUrl}/registry/${registry.ID}/scan`;
+            url = `${this.env.siloUrl}/registries/${registry.ID}/scan`;
         } else {
             this.registriesIcon = 'fa-refresh fa-spin';
             url = `${this.env.siloUrl}/registries/scan`;
