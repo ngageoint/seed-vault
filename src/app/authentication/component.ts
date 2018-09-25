@@ -22,7 +22,7 @@ export class AuthenticationComponent implements OnInit {
     env = environment;
     loading: boolean;
     authenticated: boolean;
-    loginIcon = 'fa-sign-in';
+    loginIcon = 'fa fa-sign-in';
     username: string;
     password: string;
     remember = false;
@@ -30,12 +30,12 @@ export class AuthenticationComponent implements OnInit {
     msgs: Message[] = [];
     items: MenuItem[] = [
         {
-            label: 'Search', icon: 'fa-search', routerLink: ['/'], command: () => { this.opEl.hide(); },
+            label: 'Search', icon: 'fa fa-search', routerLink: ['/'], command: () => { this.opEl.hide(); },
             routerLinkActiveOptions: { exact: true }
         },
-        { label: 'Registries', icon: 'fa-circle', routerLink: ['/registries'], command: () => { this.opEl.hide(); } },
-        { label: 'Users', icon: 'fa-user', routerLink: ['/users'], command: () => { this.opEl.hide(); } },
-        { label: 'Logout', icon: 'fa-sign-out', command: () => { this.logout(); } }
+        { label: 'Registries', icon: 'fa fa-circle', routerLink: ['/registries'], command: () => { this.opEl.hide(); } },
+        { label: 'Users', icon: 'fa fa-user', routerLink: ['/users'], command: () => { this.opEl.hide(); } },
+        { label: 'Logout', icon: 'fa fa-sign-out', command: () => { this.logout(); } }
     ];
 
     constructor(
@@ -57,17 +57,17 @@ export class AuthenticationComponent implements OnInit {
         this.msgs = [];
         this.msgs.push({ severity: 'error', summary: summary || 'Error', detail: detail });
         this.loading = false;
-        this.loginIcon = 'fa-sign-in';
+        this.loginIcon = 'fa fa-sign-in';
     }
 
     private doLogin(creds) {
         this.loading = true;
-        this.loginIcon = 'fa-spinner fa-spin';
+        this.loginIcon = 'fa fa-spinner fa-spin';
         return this.http.post(`${this.env.siloUrl}/login`, creds)
             .toPromise()
             .then(response => {
                 this.loading = false;
-                this.loginIcon = 'fa-sign-in';
+                this.loginIcon = 'fa fa-sign-in';
                 this.authenticated = true;
                 return Promise.resolve(response);
             })

@@ -16,7 +16,7 @@ export class RegistriesComponent implements OnInit {
     env = environment;
     msgs: Message[] = [];
     registries: any[] = [];
-    registriesIcon = 'fa-refresh';
+    registriesIcon = 'fa fa-refresh';
     loading: boolean;
     isScanning: boolean;
 
@@ -63,11 +63,11 @@ export class RegistriesComponent implements OnInit {
         let url = '';
         let detail = '';
         if (registry) {
-            registry.icon = 'fa-refresh fa-spin';
+            registry.icon = 'fa fa-refresh fa-spin';
             registry.isScanning = true;
             url = `${this.env.siloUrl}/registries/${registry.ID}/scan`;
         } else {
-            this.registriesIcon = 'fa-refresh fa-spin';
+            this.registriesIcon = 'fa fa-refresh fa-spin';
             url = `${this.env.siloUrl}/registries/scan`;
             this.isScanning = true;
         }
@@ -79,11 +79,11 @@ export class RegistriesComponent implements OnInit {
             .then(response => {
                 console.log(response);
                 if (registry) {
-                    registry.icon = 'fa-refresh';
+                    registry.icon = 'fa fa-refresh';
                     registry.isScanning = false;
                     detail = `${registry.Name} successfully scanned.`;
                 } else {
-                    this.registriesIcon = 'fa-refresh';
+                    this.registriesIcon = 'fa fa-refresh';
                     detail = 'All registries successfully scanned.';
                     this.isScanning = false;
                 }
@@ -96,11 +96,11 @@ export class RegistriesComponent implements OnInit {
             })
             .catch(err => {
                 if (registry) {
-                    registry.icon = 'fa-refresh';
+                    registry.icon = 'fa fa-refresh';
                     registry.isScanning = false;
                     detail = `Failed to scan ${registry.Name}`;
                 } else {
-                    this.registriesIcon = 'fa-refresh';
+                    this.registriesIcon = 'fa fa-refresh';
                     detail = 'Failed to scan registries';
                     this.isScanning = false;
                 }
@@ -111,7 +111,7 @@ export class RegistriesComponent implements OnInit {
     ngOnInit() {
         this.getRegistries().then((data: any) => {
             data.forEach(d => {
-                d.icon = 'fa-refresh';
+                d.icon = 'fa fa-refresh';
                 d.isScanning = false;
             });
             this.registries = data;

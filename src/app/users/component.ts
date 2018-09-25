@@ -22,7 +22,7 @@ export class UsersComponent implements OnInit {
     loading: boolean;
     displayDialog: boolean;
     roles: SelectItem[] = [];
-    saveIcon = 'fa-check';
+    saveIcon = 'fa fa-check';
     passwordVerify: string;
 
     constructor(
@@ -74,7 +74,7 @@ export class UsersComponent implements OnInit {
 
     private saveUser() {
         this.loading = true;
-        this.saveIcon = 'fa-cog fa-spin';
+        this.saveIcon = 'fa fa-cog fa-spin';
         return this.http.post(
                 `${this.env.siloUrl}/users/add`,
                 this.user,
@@ -83,7 +83,7 @@ export class UsersComponent implements OnInit {
             .toPromise()
             .then(response => {
                 this.loading = false;
-                this.saveIcon = 'fa-check';
+                this.saveIcon = 'fa fa-check';
                 return Promise.resolve(response);
             })
             .catch(err => {
@@ -112,14 +112,14 @@ export class UsersComponent implements OnInit {
     }
 
     delete(user: User) {
-        user.icon = 'fa-cog fa-spin';
+        user.icon = 'fa fa-cog fa-spin';
         user.isRemoving = true;
         this.deleteUser(user.ID).then(() => {
             const users = [...this.users];
             users.splice(users.indexOf(user), 1);
             this.users = users;
         }).catch(err => {
-            user.icon = 'fa-remove';
+            user.icon = 'fa fa-remove';
             user.isRemoving = false;
             this.handleError(err, 'Error deleting user');
         });
@@ -133,7 +133,7 @@ export class UsersComponent implements OnInit {
                     ID: data.ID,
                     username: data.username,
                     role: data.role,
-                    icon: 'fa-remove',
+                    icon: 'fa fa-remove',
                     isRemoving: false
                 });
                 this.users = users;
@@ -174,7 +174,7 @@ export class UsersComponent implements OnInit {
     ngOnInit() {
         this.getUsers().then((data: any) => {
             data.forEach(d => {
-                d.icon = 'fa-remove';
+                d.icon = 'fa fa-remove';
                 d.isRemoving = false;
             });
             this.users = User.transformer(data);
