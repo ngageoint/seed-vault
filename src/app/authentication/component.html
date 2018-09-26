@@ -1,6 +1,6 @@
 <nav>
-    <p-overlayPanel #op appendTo="body" (onAfterShow)="initOverlayPanel()">
-        <div class="login" *ngIf="!authenticated">
+    <p-overlayPanel #op appendTo="body" (onShow)="initOverlayPanel()">
+        <div class="login">
             <input id="user" type="text" size="30" placeholder="Username" pInputText [(ngModel)]="username" #user><br />
             <input id="pass" type="password" size="30" placeholder="Password" pInputText [(ngModel)]="password" (keypress)="onKeyPress($event)" #pass><br />
             <p-checkbox [(ngModel)]="remember" binary="true" label="Remember Me"></p-checkbox>
@@ -9,10 +9,9 @@
                         [disabled]="!username || !password || loading"></button>
             </div>
         </div>
-        <div class="menu" *ngIf="authenticated">
-            <p-menu [model]="items"></p-menu>
-        </div>
     </p-overlayPanel>
-    <button type="text" pButton icon="fa fa-bars" class="ui-button-secondary" (click)="op.toggle($event)"></button>
+    <p-menu #menu [popup]="true" [model]="items" appendTo="body"></p-menu>
+    <button type="text" pButton icon="fa fa-bars" class="ui-button-secondary" (click)="op.toggle($event)" *ngIf="!authenticated"></button>
+    <button type="text" pButton icon="fa fa-user-circle" class="ui-button-secondary" (click)="menu.toggle($event)" *ngIf="authenticated"></button>
     <p-growl life="5000" styleClass="text-left" [(value)]="msgs"></p-growl>
 </nav>

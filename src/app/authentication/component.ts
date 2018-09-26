@@ -78,7 +78,9 @@ export class AuthenticationComponent implements OnInit {
 
     initOverlayPanel(): void {
         if (!this.authenticated) {
-            this.userEl.nativeElement.focus();
+            setTimeout(() => {
+                this.userEl.nativeElement.focus();
+            });
         }
     }
 
@@ -99,6 +101,7 @@ export class AuthenticationComponent implements OnInit {
                 } else {
                     this.idle.watch();
                 }
+                this.opEl.hide();
             }).catch(err => {
                 this.handleError(err, 'Login Failed');
                 this.password = null;

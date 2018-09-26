@@ -28,13 +28,3 @@ nav {
         margin-bottom: 10px;
     }
 }
-
-.menu {
-    ::ng-deep .ui-widget-content {
-        border: none;
-    }
-
-    ::ng-deep .ui-state-active {
-        color: #fff !important;
-    }
-}
