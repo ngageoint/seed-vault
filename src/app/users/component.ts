@@ -1,7 +1,8 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient} from '@angular/common/http';
-import { Message, SelectItem } from 'primeng/primeng';
+import { SelectItem } from 'primeng/primeng';
+import { MessageService } from 'primeng/primeng';
 
 import { environment } from '../../environments/environment';
 
@@ -16,7 +17,6 @@ import { User } from './user.model';
 export class UsersComponent implements OnInit {
     @ViewChild('username') userEl: ElementRef;
     env = environment;
-    msgs: Message[] = [];
     users: any;
     user: User;
     loading: boolean;
@@ -24,8 +24,10 @@ export class UsersComponent implements OnInit {
     roles: SelectItem[] = [];
     saveIcon = 'fa fa-check';
     passwordVerify: string;
+    columns: any[];
 
     constructor(
+        private messageService: MessageService,
         private router: Router,
         private http: HttpClient,
         private stateService: StateService
@@ -41,20 +43,23 @@ export class UsersComponent implements OnInit {
             value: 'user'
         });
         this.user = new User(this.roles[0].value);
+        this.columns = [
+            { field: 'username', header: 'Username' },
+            { field: 'role', header: 'Role' }
+        ];
     }
 
     private handleError(err: any, summary?: string): void {
-        let detail = '';
+        let detailText = '';
         if (err.status === 0) {
-            detail = 'CORS error: Unable to access server';
+            detailText = 'CORS error: Unable to access server';
         } else {
-            detail = err.statusText.length > 0 ? err.statusText : 'Server error';
+            detailText = err.statusText.length > 0 ? err.statusText : 'Server error';
         }
-        this.msgs = [];
-        this.msgs.push({
+        this.messageService.add({
             severity: 'error',
             summary: summary || 'Error',
-            detail: detail
+            detail: detailText
         });
         this.loading = false;
     }
@@ -78,7 +83,7 @@ export class UsersComponent implements OnInit {
         return this.http.post(
                 `${this.env.siloUrl}/users/add`,
                 this.user,
-                { headers: {'Authorization': `token ${this.stateService.getAuthToken()}` } }
+                { headers: { Authorization: `token ${this.stateService.getAuthToken()}` } }
             )
             .toPromise()
             .then(response => {
@@ -95,7 +100,7 @@ export class UsersComponent implements OnInit {
         this.loading = true;
         return this.http.delete(
                 `${this.env.siloUrl}/users/delete/${id}`,
-                { headers: {'Authorization': `token ${this.stateService.getAuthToken()}` } }
+                { headers: { Authorization: `token ${this.stateService.getAuthToken()}` } }
             )
             .toPromise()
             .then(response => {
@@ -139,8 +144,7 @@ export class UsersComponent implements OnInit {
                 this.users = users;
                 this.displayDialog = false;
                 this.user = new User(this.roles[0].value);
-                this.msgs = [];
-                this.msgs.push({
+                this.messageService.add({
                     severity: 'success',
                     summary: 'Success',
                     detail: `${data.username} successfully added`
@@ -149,8 +153,7 @@ export class UsersComponent implements OnInit {
                 this.handleError(err, 'Error creating user');
             });
         } else {
-            this.msgs = [];
-            this.msgs.push({
+            this.messageService.add({
                 severity: 'error',
                 summary: 'Password verification failed',
                 detail: `Make sure the same value is entered in both fields.`

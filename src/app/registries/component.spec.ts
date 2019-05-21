@@ -2,6 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MessageService } from 'primeng/api';
 
 import { StateService } from '../state.service';
 import { RegistriesComponent } from './component';
@@ -15,7 +16,7 @@ describe('RegistriesComponent', () => {
             declarations: [RegistriesComponent],
             imports: [HttpClientModule],
             providers: [
-                StateService,
+                MessageService, StateService,
                 { provide: Router, useClass: class { navigate = jasmine.createSpy('navigate'); } }
             ],
             // Tells the compiler not to error on unknown elements and attributes

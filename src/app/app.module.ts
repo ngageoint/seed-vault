@@ -8,8 +8,10 @@ import { CookieService } from 'ngx-cookie-service';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { SeedImagesModule } from 'seed-images';
 
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
 import {
-    ButtonModule, CheckboxModule, DataTableModule, DialogModule, DropdownModule, GrowlModule, InputTextModule,
+    ButtonModule, CheckboxModule, DialogModule, DropdownModule, InputTextModule,
     MenuModule, OverlayPanelModule, TooltipModule
 } from 'primeng/primeng';
 
@@ -40,13 +42,13 @@ import { SearchComponent } from './search/component';
         // primeng
         ButtonModule,
         CheckboxModule,
-        DataTableModule,
         DialogModule,
         DropdownModule,
-        GrowlModule,
         InputTextModule,
         MenuModule,
         OverlayPanelModule,
+        TableModule,
+        ToastModule,
         TooltipModule
     ],
     providers: [

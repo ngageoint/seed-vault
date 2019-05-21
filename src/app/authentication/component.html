@@ -2,7 +2,8 @@
     <p-overlayPanel #op appendTo="body" (onShow)="initOverlayPanel()">
         <div class="login">
             <input id="user" type="text" size="30" placeholder="Username" pInputText [(ngModel)]="username" #user><br />
-            <input id="pass" type="password" size="30" placeholder="Password" pInputText [(ngModel)]="password" (keypress)="onKeyPress($event)" #pass><br />
+            <input id="pass" type="password" size="30" placeholder="Password" pInputText [(ngModel)]="password"
+                   (keypress)="onKeyPress($event)" #pass><br />
             <p-checkbox [(ngModel)]="remember" binary="true" label="Remember Me"></p-checkbox>
             <div class="text-right">
                 <button pButton type="button" label="Login" [icon]="loginIcon" (click)="login()"
@@ -11,7 +12,8 @@
         </div>
     </p-overlayPanel>
     <p-menu #menu [popup]="true" [model]="items" appendTo="body"></p-menu>
-    <button type="text" pButton icon="fa fa-bars" class="ui-button-secondary" (click)="op.toggle($event)" *ngIf="!authenticated"></button>
-    <button type="text" pButton icon="fa fa-user-circle" class="ui-button-secondary" (click)="menu.toggle($event)" *ngIf="authenticated"></button>
-    <p-growl life="5000" styleClass="text-left" [(value)]="msgs"></p-growl>
+    <button pButton type="button" class="ui-button-secondary" icon="fa fa-bars"
+            (click)="op.toggle($event)" *ngIf="!authenticated"></button>
+    <button pButton type="button" class="ui-button-secondary" icon="fa fa-user-circle"
+            (click)="menu.toggle($event)" *ngIf="authenticated"></button>
 </nav>

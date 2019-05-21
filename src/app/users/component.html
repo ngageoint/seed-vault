@@ -1,17 +1,29 @@
 <h1>Users</h1>
-<p-dataTable [value]="users" [responsive]="true">
-    <p-column styleClass="col-icon-btn">
-        <ng-template let-user="rowData" pTemplate="header">
-            <button pButton type="button" icon="fa fa-user-plus" (click)="addUser()" pTooltip="Add User"></button>
-        </ng-template>
-        <ng-template let-user="rowData" pTemplate="body">
-            <button pButton type="button" [icon]="user.icon" [disabled]="user.isRemoving" class="ui-button-danger"
-                    (click)="delete(user)" pTooltip="Delete {{ user.username }}"></button>
-        </ng-template>
-    </p-column>
-    <p-column field="username" header="Username"></p-column>
-    <p-column field="role" header="Role"></p-column>
-</p-dataTable>
+<p-table [value]="users" [responsive]="true" [columns]="columns">
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th>
+                <button pButton type="button" icon="fa fa-user-plus" (click)="addUser()" pTooltip="Add User"></button>
+            </th>
+            <th *ngFor="let col of columns">
+                {{ col.header }}
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+            <td>
+                <button pButton type="button" [icon]="user.icon" [disabled]="user.isRemoving" class="ui-button-danger"
+                        (click)="delete(user)" pTooltip="Delete {{ user.username }}"></button>
+            </td>
+            <td *ngFor="let col of columns" [ngSwitch]="col.field">
+                <div *ngSwitchDefault>
+                    {{ rowData[col.field] }}
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
 <p-dialog header="User Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
           (onShow)="initDialog()">
     <div *ngIf="user">
@@ -41,4 +53,3 @@
         </div>
     </p-footer>
 </p-dialog>
-<p-growl life="5000" styleClass="text-left" [(value)]="msgs"></p-growl>

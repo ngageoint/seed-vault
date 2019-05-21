@@ -48,14 +48,14 @@ export class AuthenticationComponent implements OnInit {
     ) {}
 
     private handleError(err: any, summary?: string): void {
-        let detail = '';
+        let detailText = '';
         if (err.status === 0) {
-            detail = 'CORS error: Unable to access server';
+            detailText = 'CORS error: Unable to access server';
         } else {
-            detail = err.statusText.length > 0 ? err.statusText : 'Server error';
+            detailText = err.statusText.length > 0 ? err.statusText : 'Server error';
         }
         this.msgs = [];
-        this.msgs.push({ severity: 'error', summary: summary || 'Error', detail: detail });
+        this.msgs.push({ severity: 'error', summary: summary || 'Error', detail: detailText });
         this.loading = false;
         this.loginIcon = 'fa fa-sign-in';
     }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Message } from 'primeng/primeng';
+import { MessageService } from 'primeng/primeng';
 
 import { environment } from '../../environments/environment';
 
@@ -14,13 +14,14 @@ import { StateService } from '../state.service';
 })
 export class RegistriesComponent implements OnInit {
     env = environment;
-    msgs: Message[] = [];
     registries: any[] = [];
     registriesIcon = 'fa fa-refresh';
     loading: boolean;
     isScanning: boolean;
+    columns: any[];
 
     constructor(
+        private messageService: MessageService,
         private router: Router,
         private http: HttpClient,
         private stateService: StateService
@@ -28,20 +29,24 @@ export class RegistriesComponent implements OnInit {
         if (!this.stateService.getAuthToken()) {
             this.router.navigate(['/']);
         }
+        this.columns = [
+            { field: 'Name', header: 'Name' },
+            { field: 'Url', header: 'URL' },
+            { field: 'Org', header: 'Organization' }
+        ];
     }
 
     private handleError(err: any, summary?: string): void {
-        let detail = '';
+        let detailText = '';
         if (err.status === 0) {
-            detail = 'CORS error: Unable to access server';
+            detailText = 'CORS error: Unable to access server';
         } else {
-            detail = err.statusText.length > 0 ? err.statusText : 'Server error';
+            detailText = err.statusText.length > 0 ? err.statusText : 'Server error';
         }
-        this.msgs = [];
-        this.msgs.push({
+        this.messageService.add({
             severity: 'error',
             summary: summary || 'Error',
-            detail: detail
+            detail: detailText
         });
         this.loading = false;
     }
@@ -61,7 +66,7 @@ export class RegistriesComponent implements OnInit {
 
     scanRegistry(registry?: any) {
         let url = '';
-        let detail = '';
+        let detailText = '';
         if (registry) {
             registry.icon = 'fa fa-refresh fa-spin';
             registry.isScanning = true;
@@ -72,7 +77,7 @@ export class RegistriesComponent implements OnInit {
             this.isScanning = true;
         }
         this.http.get(url, {
-                headers: {'Authorization': `token ${this.stateService.getAuthToken()}` },
+                headers: { Authorization: `token ${this.stateService.getAuthToken()}` },
                 responseType: 'text'
             })
             .toPromise()
@@ -81,30 +86,29 @@ export class RegistriesComponent implements OnInit {
                 if (registry) {
                     registry.icon = 'fa fa-refresh';
                     registry.isScanning = false;
-                    detail = `${registry.Name} successfully scanned.`;
+                    detailText = `${registry.Name} successfully scanned.`;
                 } else {
                     this.registriesIcon = 'fa fa-refresh';
-                    detail = 'All registries successfully scanned.';
+                    detailText = 'All registries successfully scanned.';
                     this.isScanning = false;
                 }
-                this.msgs = [];
-                this.msgs.push({
+                this.messageService.add({
                     severity: 'success',
                     summary: 'Registry Scan Complete',
-                    detail: detail
+                    detail: detailText
                 });
             })
             .catch(err => {
                 if (registry) {
                     registry.icon = 'fa fa-refresh';
                     registry.isScanning = false;
-                    detail = `Failed to scan ${registry.Name}`;
+                    detailText = `Failed to scan ${registry.Name}`;
                 } else {
                     this.registriesIcon = 'fa fa-refresh';
-                    detail = 'Failed to scan registries';
+                    detailText = 'Failed to scan registries';
                     this.isScanning = false;
                 }
-                this.handleError(err, detail);
+                this.handleError(err, detailText);
             });
     }
 
