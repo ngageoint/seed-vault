@@ -6,7 +6,7 @@ import { NgModule } from '@angular/core';
 
 import { CookieService } from 'ngx-cookie-service';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
-import { SeedImagesModule } from 'seed-images';
+import { SeedImagesModule } from '@ngageoint/seed-images';
 
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
