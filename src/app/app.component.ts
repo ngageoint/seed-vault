@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { environment } from '../environments/environment';
+
 @Component({
     selector: 'seed-root',
     templateUrl: './app.component.html',
@@ -11,9 +13,9 @@ export class AppComponent {
 
     onClick(e) {
         if (e.ctrlKey || e.metaKey) {
-            window.open('https://ngageoint.github.io/seed/seed.html');
+            window.open(environment.seedSpecUrl);
         } else {
-            location.href = 'https://ngageoint.github.io/seed/seed.html';
+            location.href = environment.seedSpecUrl;
         }
     }
 }

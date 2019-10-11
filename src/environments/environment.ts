@@ -6,5 +6,6 @@
 export const environment = {
     production: false,
     scale: false,
-    siloUrl: 'http://scale.omega.aisohio.net/silo'
+    siloUrl: 'http://scale.omega.aisohio.net/silo',
+    seedSpecUrl: 'https://ngageoint.github.io/seed/seed.html'
 };

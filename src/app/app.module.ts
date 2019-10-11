@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 import { CookieService } from 'ngx-cookie-service';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
@@ -22,6 +22,18 @@ import { RegistriesComponent } from './registries/component';
 import { UsersComponent } from './users/component';
 import { AuthenticationComponent } from './authentication/component';
 import { SearchComponent } from './search/component';
+import { AppConfigService } from './app-config.service';
+
+
+const appInitializer = (appConfig: AppConfigService) => {
+    return () => {
+        return appConfig.loadAppConfig('./assets/appConfig.json')
+            .catch(err => {
+                console.log(err);
+            });
+    };
+};
+
 
 @NgModule({
     declarations: [
@@ -53,7 +65,13 @@ import { SearchComponent } from './search/component';
     ],
     providers: [
         CookieService,
-        StateService
+        StateService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: appInitializer,
+            multi: true,
+            deps: [AppConfigService]
+        }
     ],
     bootstrap: [AppComponent]
 })
